@@ -1,8 +1,9 @@
-import { put } from '@vercel/blob';
+import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
 import { auth } from '@/app/(auth)/auth';
+import { minioClient, MINIO_BUCKET_NAME } from '@/lib/storage/minio-client';
 
 // Use Blob instead of File since File is not available in Node.js environment
 const FileSchema = z.object({
@@ -49,17 +50,33 @@ export async function POST(request: Request) {
     // Get filename from formData since Blob doesn't have name property
     const filename = (formData.get('file') as File).name;
     const fileBuffer = await file.arrayBuffer();
+    const objectKey = `${Date.now()}-${filename}`;
 
     try {
-      const data = await put(`${filename}`, fileBuffer, {
-        access: 'public',
-      });
+      await minioClient.send(
+        new PutObjectCommand({
+          Bucket: MINIO_BUCKET_NAME,
+          Key: objectKey,
+          Body: Buffer.from(fileBuffer),
+          ContentType: file.type,
+        })
+      );
 
-      return NextResponse.json(data);
+      // Create the public URL
+      const url = `http://localhost:9000/${MINIO_BUCKET_NAME}/${objectKey}`;
+
+      return NextResponse.json({
+        url,
+        pathname: filename,
+        contentType: file.type,
+      });
+      
     } catch (error) {
+      console.log(error);
       return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
     }
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { error: 'Failed to process request' },
       { status: 500 },
