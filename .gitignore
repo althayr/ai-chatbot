@@ -43,3 +43,7 @@ yarn-error.log*
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Project artifacts
+google-service-account.json
+.pnpm-store/*

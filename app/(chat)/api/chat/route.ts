@@ -124,17 +124,15 @@ export async function POST(request: Request) {
 
         result.consumeStream();
 
-        result.mergeIntoDataStream(dataStream, {
-          sendReasoning: true,
-        });
-      },
-      onError: () => {
-        return 'Oops, an error occured!';
-      },
-    });
-  } catch (error) {
-    return NextResponse.json({ error }, { status: 400 });
-  }
+      result.mergeIntoDataStream(dataStream, {
+        sendReasoning: true,
+      });
+    },
+    onError: (error) => {
+      console.log(error)
+      return 'Oops, an error occured!';
+    },
+  });
 }
 
 export async function DELETE(request: Request) {
