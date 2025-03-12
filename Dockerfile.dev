@@ -2,14 +2,9 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Install dependencies needed for node-gyp and other native modules
-RUN apk add --no-cache python3 make g++ curl
-
 # Install pnpm globally
 RUN npm install -g pnpm
-
-# We'll mount the entrypoint script from the host
-# No need to create it here in the Dockerfile
+RUN pnpm install turbo
 
 EXPOSE 3000
 
