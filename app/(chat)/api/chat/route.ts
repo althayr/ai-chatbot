@@ -128,11 +128,15 @@ export async function POST(request: Request) {
         sendReasoning: true,
       });
     },
-    onError: (error) => {
-      console.log(error)
-      return 'Oops, an error occured!';
-    },
-  });
+      onError: (error) => {
+        console.log(error)
+        return 'Oops, an error occured!';
+      },
+    });
+  } catch (error) {
+    console.error('Unhandled error:', error);
+    return new Response('Internal Server Error', { status: 500 });
+  }
 }
 
 export async function DELETE(request: Request) {
