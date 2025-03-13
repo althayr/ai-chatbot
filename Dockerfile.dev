@@ -9,4 +9,4 @@ RUN pnpm install turbo
 EXPOSE 3000
 
 # Use the mounted entrypoint script
-CMD ["/app/docker-entrypoint.sh"]
+CMD ["/bin/sh", "/app/docker-entrypoint.sh"]
