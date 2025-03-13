@@ -28,9 +28,7 @@ const db = drizzle(client);
 
 export async function getUser(email: string): Promise<Array<User>> {
   try {
-    const result = await db.select().from(user).where(eq(user.email, email));
-    console.log('User query result:', result);
-    return result
+    return await db.select().from(user).where(eq(user.email, email));
   } catch (error) {
     console.error('Error getting user from database:', error);
     throw error;
@@ -38,15 +36,12 @@ export async function getUser(email: string): Promise<Array<User>> {
 }
 
 export async function createUser(email: string, password: string) {
-  console.log(`Attempting to create user with email: ${email}`);
   const salt = genSaltSync(10);
   const hash = hashSync(password, salt);
 
   try {
-    const result = await db.insert(user).values({ email, password: hash });
-    console.log('User creation result:', result);
-    return result
-  } catch (error) {
+    return await db.insert(user).values({ email, password: hash });
+} catch (error) {
     console.error('Failed to create user in database', error);
     throw error;
   }

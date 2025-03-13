@@ -1,7 +1,8 @@
+import { customProvider } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import { anthropic } from '@ai-sdk/anthropic';
-import {  customProvider } from 'ai';
 import { google } from '@ai-sdk/google';
+import { groq } from '@ai-sdk/groq';
 
 export const DEFAULT_CHAT_MODEL: string = 'chat-model-small';
 
@@ -10,8 +11,11 @@ export const myProvider = customProvider({
     'chat-model-small': openai('gpt-4o-mini'),
     'chat-model-large': openai('gpt-4o'),
     'chat-model-reasoning': openai('o3-mini'),
-    'chat-model-gemini': google('models/gemini-2.0-flash-exp'),
+    'chat-model-gemini': google('gemini-2.0-flash-exp'),
     'chat-model-anthropic': anthropic('claude-3-7-sonnet-20250219'),
+    'groq-llama-3.3-70b-versatile': groq('llama-3.3-70b-versatile'),
+    'groq-llama-3.1-8b-instant': groq('llama-3.1-8b-instant'),
+    'groq-deepseek-r1-distill-qwen-32b': groq('deepseek-r1-distill-qwen-32b'),
     'title-model': openai('gpt-4o'),
     'artifact-model': openai('gpt-4o-mini'),
   },
@@ -53,4 +57,19 @@ export const chatModels: Array<ChatModel> = [
     name: 'Anthropic model',
     description: 'claude-sonnet-3.7',
   },
+  {
+    id: 'groq-llama-3.3-70b-versatile',
+    name: 'Groq model',
+    description: 'groq-llama-3.3-70b-versatile',
+  },
+  {
+    id: 'groq-llama-3.1-8b-instant',
+    name: 'Groq model',
+    description: 'groq-llama-3.1-8b-instant',
+  },
+  {
+    id: 'groq-deepseek-r1-distill-qwen-32b',
+    name: 'Groq model',
+    description: 'groq-deepseek-r1-distill-qwen-32b',
+  }
 ];
